@@ -3,9 +3,9 @@
 
 LiquidCrystal_I2C lcd(0x27, 16, 2); // set the LCD address to 0x27 for a 16 chars and 2 line display
 
-const int Button250ml = 4; // button for 250ml
-const int Button500ml = 8; // button for 500ml
-const int Button1000ml = 6; // button for 1000ml
+const int Button5000ml = 4; // button for 5000ml
+const int Button750ml = 6; // button for 750ml
+const int Button1000ml = 8; // button for 1000ml
 const int StartButton = 7; // button for start
 
 
@@ -30,7 +30,7 @@ float flowRate;
 unsigned int flowMilliLitres = 0;
 unsigned long totalMilliLitres = 0;
 unsigned long TotalPrint = 0;
-unsigned long Threshold = 295;
+unsigned long Threshold = 4000;
 
 unsigned long oldTime;
 
@@ -42,22 +42,22 @@ void setup()
     lcd.print(" Automatic Oil ");
     lcd.setCursor(0, 1);
     lcd.print("Filling Machine ");
-    delay(3000);
+    delay(1000);
     lcd.clear();
   
     lcd.setCursor(2, 0);
     lcd.print("Designed by");
     lcd.setCursor(1, 1);
     lcd.print("City Hardware");
-    delay(2000);
+    delay(1000);
     lcd.clear();
 
   lcd.setCursor(0, 0);
   lcd.print("Set Qty: ");
-  lcd.print("250");
+  lcd.print("5000");
   lcd.print(" ML");
-  pinMode(Button250ml, INPUT_PULLUP);
-  pinMode(Button500ml, INPUT_PULLUP);
+  pinMode(Button5000ml, INPUT_PULLUP);
+  pinMode(Button750ml, INPUT_PULLUP);
   pinMode(Button1000ml, INPUT_PULLUP);
 
   pinMode(StartButton, INPUT_PULLUP);
@@ -84,13 +84,13 @@ void setup()
 }
 
 void loop()
-{ if (digitalRead(Button250ml) == LOW && b1pressed == false && WP_ON == false)
+{ if (digitalRead(Button5000ml) == LOW && b1pressed == false && WP_ON == false)
   { b1pressed = true;
     lcd.clear();
-    Threshold = 295; //295 to 50
+    Threshold = 4000; //4000 to 50
     lcd.setCursor(0, 0);
     lcd.print("Set Qty: ");
-    lcd.print("250");
+    lcd.print("5000");
     lcd.print(" ML");
     digitalWrite(Buzzer, HIGH);
     delay(80);
@@ -98,25 +98,25 @@ void loop()
     totalMilliLitres = 0;
 
   }
-  if (digitalRead(Button250ml) == HIGH)
+  if (digitalRead(Button5000ml) == HIGH)
   {
     b1pressed = false;
   }
-  if (digitalRead(Button500ml) == LOW && b2pressed == false && WP_ON == false)
+  if (digitalRead(Button750ml) == LOW && b2pressed == false && WP_ON == false)
   { b2pressed = true;
     lcd.clear();
     //Threshold = 585;
-    Threshold = 460;
+    Threshold = 600;
     lcd.setCursor(0, 0);
     lcd.print("Set Qty: ");
-    lcd.print("500");
+    lcd.print("750");
     lcd.print(" ML");
     digitalWrite(Buzzer, HIGH);
     delay(80);
     digitalWrite(Buzzer, LOW);
     totalMilliLitres = 0;
   }
-  if (digitalRead(Button500ml) ==+ HIGH)
+  if (digitalRead(Button750ml) ==+ HIGH)
   {
     b2pressed = false;
   }
@@ -124,7 +124,7 @@ void loop()
   { b3pressed = true;
     lcd.clear();
     //Threshold = 1195;
-    Threshold = 820;
+    Threshold = 800;
     lcd.setCursor(0, 0);
     lcd.print("Set Qty: ");
     lcd.print("1000");
@@ -155,21 +155,21 @@ void loop()
   unsigned int frac;
 
   TotalPrint = totalMilliLitres;
-  if(Threshold == 295)
+  if(Threshold == 4000)
   {
-    TotalPrint = map(TotalPrint, 0, 295, 0, 250);//295 to 50
+    TotalPrint = map(TotalPrint, 0, 4000, 0, 5000);//4000 to 50
     TotalPrint = constrain(TotalPrint, 0, TotalPrint);
-    TotalPrint = constrain(TotalPrint, 0, 250);
+    TotalPrint = constrain(TotalPrint, 0, 5000);
   }
-  if(Threshold == 460)
+  if(Threshold == 600)
   {
-    TotalPrint = map(TotalPrint, 0, 460, 0, 500);
+    TotalPrint = map(TotalPrint, 0, 600, 0, 750);
     TotalPrint = constrain(TotalPrint, 0, TotalPrint);
-    TotalPrint = constrain(TotalPrint, 0, 500);
+    TotalPrint = constrain(TotalPrint, 0, 750);
   }
-  if(Threshold == 820)
+  if(Threshold == 800)
   {
-    TotalPrint = map(TotalPrint, 0, 820, 0, 1000);
+    TotalPrint = map(TotalPrint, 0, 800, 0, 1000);
     TotalPrint = constrain(TotalPrint, 0, TotalPrint);
     TotalPrint = constrain(TotalPrint, 0, 1000);
   }
@@ -188,11 +188,11 @@ void loop()
     WP_ON = true;
     lcd.setCursor(0, 0);
     lcd.print("Set Qty: ");
-    if(Threshold==295)//295 to 50
-    {lcd.print("250");}
-    if(Threshold==460)
-    {lcd.print("500");}
-    if(Threshold==820)
+    if(Threshold==4000)//295 to 4000
+    {lcd.print("5000");}
+    if(Threshold==600)
+    {lcd.print("750");}
+    if(Threshold==800)
     {lcd.print("1000");}
     
     lcd.print(" ML");
@@ -222,11 +222,11 @@ void loop()
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Set Qty: ");
-    if(Threshold==295)//295 to 50
-    {lcd.print("250");}
-    if(Threshold==460)
-    {lcd.print("500");}
-    if(Threshold==820)
+    if(Threshold==4000)//4000 to 50
+    {lcd.print("5000");}
+    if(Threshold==600)
+    {lcd.print("750");}
+    if(Threshold==800)
     {lcd.print("1000");}
     lcd.print(" ML");
     totalMilliLitres = 0;
